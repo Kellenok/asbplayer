@@ -1,5 +1,6 @@
 {
     "action": {
+        "autoSubs": "Subtítulos Automáticos",
         "cancel": "Cancelar",
         "copy": "Copiar",
         "delete": "Excluir",
@@ -49,6 +50,16 @@
         "disabled": "Disabled",
         "inNotOut": "Enabled",
         "inAndOut": "Enabled with auto-resume"
+    },
+    "autoSubsDialog": {
+        "title": "Subtítulos Automáticos",
+        "selectSubtitles": "Selecionar Subtítulos",
+        "load": "Carregar Subtítulos",
+        "animeTitle": "Título",
+        "episode": "Episódio",
+        "search": "Pesquisar",
+        "selectSubtitle": "Selecionar Subtítulo",
+        "apiKey": "Chave de API"
     },
     "ankiDialog": {
         "applySelection": "Aplicar seleção",
@@ -219,6 +230,8 @@
             "subtitleTrack": "Selecionar faixa",
             "videoName": "Nome do vídeo",
             "ftue": "Auto-detected subtitle tracks can be selected here. asbplayer does not know how to detect subtitles on every site. You can always load your own subtitle files."
+            "episode": "Episódio",
+            "search": "Pesquisar"
         },
         "videoSelect": {
             "multipleVideoElements": "Detectados Múltiplos Elementos de Vídeo",
@@ -405,6 +418,7 @@
         "missingFieldError": "Field \"{{field}}\" not found in note type",
         "webSocketClientEnabled": "Enable WebSocket client",
         "webSocketServerUrl": "WebSocket Server URL",
+        "apiKey": "API Key",
         "firefoxExtensionShortcutHelp": "Edit this shortcut from the Plugin manager at about:addons.",
         "postMinePlayback": "Post-mining playback state",
         "pauseOnHoverMode": "Auto-pause when mousing over subtitles",
