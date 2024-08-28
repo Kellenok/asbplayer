@@ -209,6 +209,9 @@ export interface VideoDataUiModel {
     settings: VideoDataUiSettings;
     hasSeenFtue: boolean;
     hideRememberTrackPreferenceToggle: boolean;
+    episode?: number | '';
+    isAnimeSite?: boolean;
+    onSearch?: (title: string, episode: number | '') => void;
 }
 
 export interface VideoTabModel {

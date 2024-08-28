@@ -488,6 +488,9 @@ const settingsSchema = {
                 $ref: '/DictionaryTrack',
             },
         },
+        apiKey: {
+            type: 'string',
+        },
         _schema: {
             type: 'number',
         },

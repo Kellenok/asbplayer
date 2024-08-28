@@ -1,5 +1,6 @@
 {
     "action": {
+        "autoSubs": "Auto Subs",
         "cancel": "Отменить",
         "copy": "Копировать",
         "delete": "Удалить",
@@ -52,6 +53,16 @@
         "disabled": "Выкл",
         "inNotOut": "Вкл",
         "inAndOut": "Включено с автовозобновлением"
+    },
+    "autoSubsDialog": {
+        "title": "Автоматические субтитры",
+        "selectSubtitles": "Выбрать субтитры",
+        "load": "Загрузить субтитры",
+        "animeTitle": "Название аниме",
+        "episode": "Эпизод",
+        "search": "Поиск",
+        "selectSubtitle": "Выбрать субтитр",
+        "apiKey": "Ключ API"
     },
     "ankiDialog": {
         "applySelection": "Применить выбор",
@@ -234,7 +245,9 @@
             "selectSubtitles": "Выбрать субтитры",
             "subtitleTrack": "Выбрать дорожку субтитров",
             "videoName": "Название видео",
-            "ftue": "Здесь можно выбрать дорожки субтитров найденные автоматически. Автоматическая загрузка субтитров не работает на каждом сайте - вы всегда можете загрузить свои собственные файлы с субтитрами."
+            "ftue": "Здесь можно выбрать дорожки субтитров найденные автоматически. Автоматическая загрузка субтитров не работает на каждом сайте - вы всегда можете загрузить свои собственные файлы с субтитрами.",
+            "episode": "Эпизод",
+            "search": "Поиск"
         },
         "videoSelect": {
             "multipleVideoElements": "Обнаружено несколько видеоэлементов",
@@ -490,7 +503,8 @@
         "dictionaryTokenStatus0": "Uncollected",
         "ui": "UI",
         "webSocketInterface": "WebSocket interface",
-        "yomitanHelperText": "Instructions to setup Yomitan API are <0>here<0>."
+        "yomitanHelperText": "Instructions to setup Yomitan API are <0>here<0>.",
+        "apiKey": "Ключ API"
     },
     "subtitlePlayer": {
         "multiSubtitleSelectHelp": "Нажмите, удерживайте и перетащите, чтобы смайнить несколько субтитров"
