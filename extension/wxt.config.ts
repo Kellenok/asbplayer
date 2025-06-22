@@ -65,6 +65,7 @@ export default defineConfig({
                         'fonts/*',
                         'asbplayer-locales/*',
                         'icon/image.png',
+                        'anime-page.js',
                         'netflix-page.js',
                         'youtube-page.js',
                         'tver-page.js',
