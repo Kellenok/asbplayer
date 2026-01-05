@@ -421,7 +421,6 @@ export interface StreamingVideoSettings {
     readonly streamingSubsDragAndDrop: boolean;
     readonly streamingAutoSync: boolean;
     readonly streamingAutoSyncPromptOnFailure: boolean;
-    readonly streamingUseWebGpuForWhisper: boolean;
     // Last language selected in subtitle track selector, keyed by domain
     // Used to auto-selecting a language in subtitle track selector, if it's available
     readonly streamingLastLanguagesSynced: { [key: string]: string[] };
@@ -436,11 +435,11 @@ export type KeyBindName = keyof KeyBindSet;
 
 export interface AsbplayerSettings
     extends MiscSettings,
-        AnkiSettings,
-        SubtitleSettings,
-        DictionarySettings,
-        StreamingVideoSettings,
-        WebSocketClientSettings {
+    AnkiSettings,
+    SubtitleSettings,
+    DictionarySettings,
+    StreamingVideoSettings,
+    WebSocketClientSettings {
     readonly subtitlePreview: string;
     readonly apiKey: string;
 }

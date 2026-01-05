@@ -167,7 +167,6 @@ export const defaultSettings: AsbplayerSettings = {
     streamingSubsDragAndDrop: true,
     streamingAutoSync: false,
     streamingAutoSyncPromptOnFailure: false,
-    streamingUseWebGpuForWhisper: false,
     streamingLastLanguagesSynced: {},
     streamingCondensedPlaybackMinimumSkipIntervalMs: 1000,
     streamingScreenshotDelay: 1000,

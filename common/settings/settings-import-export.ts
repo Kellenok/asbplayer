@@ -470,9 +470,6 @@ const settingsSchema = {
         streamingEnableOverlay: {
             type: 'boolean',
         },
-        streamingUseWebGpuForWhisper: {
-            type: 'boolean',
-        },
         webSocketClientEnabled: {
             type: 'boolean',
         },
@@ -515,9 +512,8 @@ const withIgnoredKeysRemoved = (settings: any) => {
 
 export const exportSettings = (settings: AsbplayerSettings) => {
     const now = new Date();
-    const timeString = `${now.getFullYear()}-${
-        now.getMonth() + 1
-    }-${now.getDate()}-${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}`;
+    const timeString = `${now.getFullYear()}-${now.getMonth() + 1
+        }-${now.getDate()}-${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}`;
 
     download(
         new Blob([JSON.stringify(withIgnoredKeysRemoved(settings))], { type: 'appliction/json' }),

@@ -90,6 +90,7 @@ export default defineConfig({
                         'mp3-encoder-worker.js',
                         'pgs-parser-worker.js',
                         'onnx/*',
+                        'alass-wasm/*',
                         'video-data-sync-ui.js',
                         'video-select-ui.js',
                         'notification-ui.js',
@@ -154,12 +155,13 @@ export default defineConfig({
         let permissions = ['tabs', 'storage'];
 
         if (browser === 'chrome') {
-            permissions = [...permissions, 'tabCapture', 'activeTab', 'contextMenus', 'sidePanel', 'offscreen'];
+            permissions = [...permissions, 'tabCapture', 'activeTab', 'contextMenus', 'sidePanel', 'offscreen', 'webRequest', 'declarativeNetRequest'];
 
             manifest = {
                 ...manifest,
                 minimum_chrome_version: '116',
                 commands,
+                host_permissions: ['<all_urls>'],
                 content_security_policy: {
                     extension_pages: "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'",
                 },

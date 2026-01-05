@@ -66,7 +66,7 @@ import ClearCopyHistoryHandler from '@/handlers/asbplayerv2/clear-copy-history-h
 import SaveCopyHistoryHandler from '@/handlers/asbplayerv2/save-copy-history-handler';
 import PageConfigHandler from '@/handlers/asbplayerv2/page-config-handler';
 import EncodeMp3Handler from '@/handlers/video/encode-mp3-handler';
-import WhisperTranscriptionHandler from '@/handlers/asbplayer/whisper-transcription-handler';
+import AlassSyncHandler from '@/handlers/asbplayer/alass-sync-handler';
 
 export default defineBackground(() => {
     if (!isFirefoxBuild) {
@@ -165,7 +165,7 @@ export default defineBackground(() => {
         new OpenExtensionShortcutsHandler(),
         new ExtensionCommandsHandler(),
         new PageConfigHandler(),
-        new WhisperTranscriptionHandler(),
+        new AlassSyncHandler(),
         new AsbplayerV2ToVideoCommandForwardingHandler(),
         new CaptureVisibleTabHandler(),
         new RequestModelHandler(),
@@ -180,21 +180,12 @@ export default defineBackground(() => {
             return false;
         }
 
-        // Debug: log whisper-related messages
-        if (request?.message?.command === 'start-whisper-transcription') {
-            console.log('[Background] Received whisper message:', request);
-        }
-
         for (const handler of handlers) {
             if (
                 (typeof handler.sender === 'string' && handler.sender === request.sender) ||
                 (typeof handler.sender === 'object' && handler.sender.includes(request.sender))
             ) {
                 if (handler.command === null || handler.command === request.message.command) {
-                    // Debug: log handler match
-                    if (request?.message?.command === 'start-whisper-transcription') {
-                        console.log('[Background] Handler matched:', handler.constructor.name, handler.command);
-                    }
                     if (handler.handle(request, sender, sendResponse) === true) {
                         return true;
                     }
@@ -512,11 +503,7 @@ export default defineBackground(() => {
     }
 
     if (isFirefoxBuild) {
-        // Firefox requires the use of iframe.srcdoc in order to load UI into an about:blank iframe
-        // (which is required for UI to be scannable by other extensions like Yomitan).
-        // However, such an iframe inherits the content security directives of the parent document,
-        // which may prevent loading of extension scripts into the iframe.
-        // Because of this, we modify CSP headers below to explicitly allow access to extension-packaged resources.
+        // ... (Firefox CSP handling)
         browser.webRequest.onHeadersReceived.addListener(
             (details) => {
                 const responseHeaders = details.responseHeaders;
@@ -537,5 +524,158 @@ export default defineBackground(() => {
             { urls: ['<all_urls>'] },
             ['blocking', 'responseHeaders']
         );
+    }
+
+    //
+    // Alass Subtitle Interception
+    //
+    const fetchedSubtitleUrls = new Set<string>();
+    const requestHeadersMap = new Map<string, Record<string, string>>();
+
+    // Clear fetching cache when tab updates significantly or is closed
+    browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+        if (changeInfo.status === 'loading') {
+            // Clear subtitles for this tab
+            browser.storage.session.remove(`discoveredSubtitle_${tabId}`);
+        }
+    });
+
+    browser.tabs.onRemoved.addListener((tabId) => {
+        browser.storage.session.remove(`discoveredSubtitle_${tabId}`);
+    });
+
+    if (browser.webRequest) {
+        // Capture headers from the original request
+        browser.webRequest.onBeforeSendHeaders.addListener(
+            // @ts-ignore
+            (details) => {
+                const url = details.url;
+                const isDirectVtt = /\.vtt(\?|$)/i.test(url) && /(eng|en)/i.test(url);
+                const isProxyVtt = /\/vtt\/?\?url=/i.test(url);
+
+                if (isDirectVtt || isProxyVtt) {
+                    const headers: Record<string, string> = {};
+                    details.requestHeaders?.forEach((h) => {
+                        if (h.name && h.value) headers[h.name] = h.value;
+                    });
+                    requestHeadersMap.set(details.requestId, headers);
+
+                    // Cleanup in case request fails/cancels
+                    setTimeout(() => requestHeadersMap.delete(details.requestId), 30000);
+                }
+                return;
+            },
+            { urls: ['<all_urls>'] },
+            ['requestHeaders', 'extraHeaders']
+        );
+
+        browser.webRequest.onCompleted.addListener(
+            (details) => {
+                const url = details.url;
+                if (details.statusCode !== 200 || details.method !== 'GET') return;
+
+                // Don't fetch if already processed for this specific request
+                if (fetchedSubtitleUrls.has(url)) return;
+
+                const isDirectVtt = /\.vtt(\?|$)/i.test(url) && /(eng|en)/i.test(url);
+                const isMiruroVtt = url.includes('pro.ultracloud.cc/vtt');
+
+                if (isDirectVtt || isMiruroVtt) {
+                    if (isMiruroVtt) {
+                        try {
+                            const urlParams = new URL(url).searchParams;
+                            const encodedUrl = urlParams.get('url');
+
+                            if (encodedUrl) {
+                                const decodedUrl = atob(encodedUrl);
+                                const isVtt = decodedUrl.includes('.vtt');
+                                const isEng = /(eng|en)/i.test(decodedUrl);
+
+                                if (!isVtt || !isEng) {
+                                    return;
+                                }
+                            }
+                        } catch (e) {
+                            return;
+                        }
+                    }
+
+                    if (url.includes('thumbnails') || url.includes('sprite')) return;
+
+                    fetchedSubtitleUrls.add(url);
+                    // Clear cache for this URL after some time to allow re-fetching if needed later
+                    setTimeout(() => fetchedSubtitleUrls.delete(url), 30000);
+
+                    // Get captured headers
+                    const capturedHeaders = requestHeadersMap.get(details.requestId) || {};
+                    requestHeadersMap.delete(details.requestId);
+
+                    // Construct headers for fetch
+                    // We must use the original headers to pass 403 checks (Origin, Referer, etc)
+                    const fetchHeaders: Record<string, string> = { ...capturedHeaders };
+
+                    // Fallback for Origin/Referer if missing (though they should be in capturedHeaders)
+                    if (!fetchHeaders['Origin'] && details.initiator) {
+                        fetchHeaders['Origin'] = details.initiator;
+                    }
+                    if (!fetchHeaders['Referer'] && details.initiator) {
+                        fetchHeaders['Referer'] = details.initiator + '/';
+                    }
+
+                    fetch(url, { headers: fetchHeaders })
+                        .then((r) => r.text())
+                        .then(async (content) => {
+                            if (!content || !content.includes('WEBVTT')) return;
+                            if (content.includes('#xywh=') || content.includes('/image?url=')) return;
+
+                            interface DiscoveredSubtitle {
+                                url: string;
+                                content: string;
+                                timestamp: number;
+                                language: string;
+                            }
+
+                            const subtitle: DiscoveredSubtitle = {
+                                url,
+                                content,
+                                timestamp: Date.now(),
+                                language: 'en',
+                            };
+
+                            // Store per tab
+                            if (details.tabId >= 0) {
+                                await browser.storage.session.set({
+                                    [`discoveredSubtitle_${details.tabId}`]: subtitle,
+                                });
+                            }
+                        })
+                        .catch(() => { });
+                }
+            },
+            { urls: ['<all_urls>'] }
+        );
+    }
+
+    if (browser.declarativeNetRequest) {
+        browser.declarativeNetRequest.updateDynamicRules({
+            removeRuleIds: [1],
+            addRules: [
+                {
+                    id: 1,
+                    priority: 1,
+                    action: {
+                        type: 'modifyHeaders',
+                        requestHeaders: [
+                            { header: 'Origin', operation: 'set', value: 'https://www.miruro.to' },
+                            { header: 'Referer', operation: 'set', value: 'https://www.miruro.to/' },
+                        ],
+                    },
+                    condition: {
+                        urlFilter: 'pro.ultracloud.cc/vtt',
+                        resourceTypes: ['xmlhttprequest', 'other'],
+                    },
+                },
+            ],
+        });
     }
 });
