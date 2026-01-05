@@ -69,12 +69,9 @@ This is a fork of [asbplayer](https://github.com/killergerbah/asbplayer) that ad
 - Clicking opens a modal with fields for API key, anime title, episode number and a search button
 - When a result is found, it will be loaded into the player automatically
 
-**Extension demo:**
+**Extension demo:** (credit: [@Kellenok](https://github.com/Kellenok))
 
-> [!NOTE]
-> this demo is a bit outdated. You don't need to click "Search". And if you have `Auto-load detected subtitle` enabled, it picks the first one and loads it as soon as you click on anime.
-
-https://github.com/user-attachments/assets/08be7905-fe75-4ef4-8424-0ea20753e5af
+https://github.com/user-attachments/assets/de743621-6574-47a8-ba32-b3696a5922c3
 
 **Web app demo:**
 
