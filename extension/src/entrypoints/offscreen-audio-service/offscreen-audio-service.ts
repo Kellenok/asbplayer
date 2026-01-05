@@ -178,7 +178,10 @@ window.onload = async () => {
                                 ? StopRecordingErrorCode.timedAudioRecordingInProgress
                                 : StopRecordingErrorCode.other;
                         if (!(e instanceof NoRecordingInProgressError)) console.error(e);
-                        sendResponse({ stopped: false, error: { code: errorCode, message: e.message } } as StopRecordingResponse);
+                        sendResponse({
+                            stopped: false,
+                            error: { code: errorCode, message: e.message },
+                        } as StopRecordingResponse);
                     });
                 return true;
             }
@@ -196,7 +199,10 @@ window.onload = async () => {
                     .then((result) => sendResponse(result))
                     .catch((e) => {
                         console.error('Raw audio capture failed:', e);
-                        sendResponse({ success: false, error: e instanceof Error ? e.message : String(e) } as RawAudioCapturedResponse);
+                        sendResponse({
+                            success: false,
+                            error: e instanceof Error ? e.message : String(e),
+                        } as RawAudioCapturedResponse);
                     });
                 return true;
             }

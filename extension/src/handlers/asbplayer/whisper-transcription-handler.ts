@@ -71,7 +71,12 @@ export default class WhisperTranscriptionHandler {
 
             console.log('[Whisper] Detecting offset...');
             const offsetResult = detectOffset(subtitles, transcription, { captureStartTimeMs });
-            console.log('[Whisper] Offset:', offsetResult.offset, 'ms, confidence:', Math.round(offsetResult.confidence * 100) + '%');
+            console.log(
+                '[Whisper] Offset:',
+                offsetResult.offset,
+                'ms, confidence:',
+                Math.round(offsetResult.confidence * 100) + '%'
+            );
 
             if (offsetResult.confidence < 0.3) {
                 throw new Error(`Low confidence (${Math.round(offsetResult.confidence * 100)}%)`);

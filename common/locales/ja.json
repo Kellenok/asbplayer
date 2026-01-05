@@ -1,6 +1,7 @@
 {
     "action": {
         "autoSubs": "Auto Subs",
+        "autoSyncSubtitles": "字幕を自動同期",
         "cancel": "キャンセル",
         "copy": "コピー",
         "delete": "削除",

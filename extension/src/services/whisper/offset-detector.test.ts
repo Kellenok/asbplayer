@@ -77,7 +77,7 @@ describe('detectOffset', () => {
     });
 
     it('ignores punctuation in matching', () => {
-        const subs = [subtitle("Hello, world!", 5000, 7000)];
+        const subs = [subtitle('Hello, world!', 5000, 7000)];
         const trans = transcription([{ text: 'hello world', start: 3, end: 5 }]);
 
         const result = detectOffset(subs, trans);

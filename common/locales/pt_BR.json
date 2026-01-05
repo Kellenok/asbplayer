@@ -1,6 +1,7 @@
 {
     "action": {
         "autoSubs": "Subtítulos Automáticos",
+        "autoSyncSubtitles": "Sincronização automática de legendas",
         "cancel": "Cancelar",
         "copy": "Copiar",
         "delete": "Excluir",
@@ -223,6 +224,7 @@
             "takeScreenshot": "Capturar tela ao minerar",
             "updateAvailable": "Atualização disponível",
             "enableOverlay": "Ativar sobreposição de controles",
+            "useWebGpuForWhisper": "Usar WebGPU para transcrição Whisper (experimental)",
             "pages": {
                 "overridesWarning": "These settings have been modified.",
                 "host": "Host regex",

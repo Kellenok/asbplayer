@@ -1,6 +1,7 @@
 {
     "action": {
         "autoSubs": "Auto Subs",
+        "autoSyncSubtitles": "Автосинхронизация субтитров",
         "cancel": "Отменить",
         "copy": "Копировать",
         "delete": "Удалить",
@@ -223,6 +224,7 @@
             "takeScreenshot": "Сделать скриншот",
             "updateAvailable": "Доступно обновление",
             "enableOverlay": "Включить оверлей",
+            "useWebGpuForWhisper": "Использовать WebGPU для транскрипции Whisper (экспериментально)",
             "pages": {
                 "overridesWarning": "These settings have been modified.",
                 "host": "Host regex",

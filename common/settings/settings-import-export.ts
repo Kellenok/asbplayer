@@ -470,6 +470,9 @@ const settingsSchema = {
         streamingEnableOverlay: {
             type: 'boolean',
         },
+        streamingUseWebGpuForWhisper: {
+            type: 'boolean',
+        },
         webSocketClientEnabled: {
             type: 'boolean',
         },

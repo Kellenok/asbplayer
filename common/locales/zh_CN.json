@@ -1,6 +1,7 @@
 {
     "action": {
         "autoSubs": "Auto Subs",
+        "autoSyncSubtitles": "自动同步字幕",
         "cancel": "取消",
         "copy": "复制",
         "delete": "删除",
@@ -223,6 +224,7 @@
             "takeScreenshot": "截屏",
             "updateAvailable": "可用更新",
             "enableOverlay": "Enable controls overlay",
+            "useWebGpuForWhisper": "使用 WebGPU 进行 Whisper 转录（实验性）",
             "pages": {
                 "overridesWarning": "These settings have been modified.",
                 "host": "Host regex",

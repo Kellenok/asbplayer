@@ -347,7 +347,10 @@ export default function SidePanel({ settings, extension }: Props) {
             _sender: Browser.runtime.MessageSender,
             sendResponse: (response: TranscribeAudioResponse) => void
         ) => {
-            if (request?.sender === 'asbplayer-extension-to-sidepanel' && request?.message?.command === 'transcribe-audio') {
+            if (
+                request?.sender === 'asbplayer-extension-to-sidepanel' &&
+                request?.message?.command === 'transcribe-audio'
+            ) {
                 const msg = request.message as TranscribeAudioMessage;
                 transcribeAudio(msg.audioBase64, msg.language, msg.useWebGpu)
                     .then((result) => sendResponse({ success: true, segments: result.segments }))

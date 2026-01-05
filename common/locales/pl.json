@@ -1,6 +1,7 @@
 {
     "action": {
         "autoSubs": "Auto Subs",
+        "autoSyncSubtitles": "Automatyczna synchronizacja napisów",
         "cancel": "Anuluj",
         "copy": "Kopiuj",
         "delete": "Usuń",
@@ -223,6 +224,7 @@
             "takeScreenshot": "Rób zrzut ekranu",
             "updateAvailable": "Dostępna aktualizacja",
             "enableOverlay": "Pokaż panel kontrolny",
+            "useWebGpuForWhisper": "Użyj WebGPU do transkrypcji Whisper (eksperymentalne)",
             "pages": {
                 "overridesWarning": "These settings have been modified.",
                 "host": "Host regex",

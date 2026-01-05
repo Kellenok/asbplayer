@@ -13,7 +13,6 @@ if (env?.backends?.onnx?.wasm) {
 
 const MODEL_ID = 'onnx-community/whisper-small';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let transcriber: any = null;
 let loadPromise: Promise<void> | null = null;
 let loadedWithWebGpu: boolean | null = null;

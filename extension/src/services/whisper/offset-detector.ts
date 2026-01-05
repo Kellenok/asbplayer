@@ -179,7 +179,10 @@ export function interpolateOffset(originalStartMs: number, totalDurationMs: numb
     return Math.round(sortedPoints[sortedPoints.length - 1].offset);
 }
 
-function flattenTranscription(transcription: WhisperTranscriptionResult, captureStartTimeSec: number = 0): WhisperWord[] {
+function flattenTranscription(
+    transcription: WhisperTranscriptionResult,
+    captureStartTimeSec: number = 0
+): WhisperWord[] {
     const words: WhisperWord[] = [];
 
     for (const segment of transcription.segments) {

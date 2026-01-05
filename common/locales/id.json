@@ -1,6 +1,7 @@
 {
     "action": {
         "autoSubs": "Sub Otomatis",
+        "autoSyncSubtitles": "Sinkronisasi otomatis takarir",
         "cancel": "Batal",
         "copy": "Salin",
         "delete": "Hapus",
@@ -223,6 +224,7 @@
             "takeScreenshot": "Ambil tangkapan layar saat menambang",
             "updateAvailable": "Pembaruan Tersedia",
             "enableOverlay": "Aktifkan lapisan kontrol",
+            "useWebGpuForWhisper": "Use WebGPU for Whisper transcription (experimental)",
             "pages": {
                 "overridesWarning": "Pengaturan ini telah dimodifikasi.",
                 "host": "Regex Host",
