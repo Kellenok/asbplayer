@@ -52,7 +52,7 @@ export default defineConfig({
         let manifest: UserManifest = {
             name: 'API subs for asbplayer',
             description: 'API subs for asbplayer',
-            version: '1.0.4',
+            version: '1.1.0',
             action: { default_title: 'asbplayer' },
             default_locale: 'en',
             icons: {
@@ -160,6 +160,9 @@ export default defineConfig({
                 ...manifest,
                 minimum_chrome_version: '116',
                 commands,
+                content_security_policy: {
+                    extension_pages: "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'",
+                },
             };
         }
 
